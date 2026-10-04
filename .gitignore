@@ -1,0 +1,48 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Editors
+.idea/
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Generated application data
+storage/
+data/extracted/
+
+# Source documents may be copyrighted
+data/documents/*
+!data/documents/.gitkeep
+
+# Model / vector artifacts
+*.onnx
+*.pt
+*.pth
+*.bin
+qdrant_storage/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS
+.DS_Store
