@@ -1,0 +1,9 @@
+[
+  {
+    "query": "What tools do I need for brake service?",
+    "expected_pages": [
+      6
+    ],
+    "benchmark_type": "multimodal_visual"
+  }
+]
