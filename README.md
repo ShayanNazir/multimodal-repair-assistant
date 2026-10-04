@@ -138,3 +138,27 @@ Only use documents whose licenses or terms permit your intended use. Do not redi
 ## Status
 
 Active development. The repository is currently scaffolded for the document-ingestion milestone.
+
+## Getting Started: Phase 1 - Ingestion
+
+To process PDF manuals and extract text and images:
+
+1. Place your PDF files in `data/documents/`.
+2. Run the ingestion CLI:
+   ```bash
+   python src/ingestion/cli.py
+   ```
+3. The extracted text and page images will be saved in `data/extracted/`.
+
+## Getting Started: Phase 1 - Ingestion
+
+To process PDF manuals and extract text and images:
+
+1. Place your PDF files in `data/documents/`.
+2. Run the ingestion CLI:
+   ```bash
+   python src/ingestion/cli.py
+   ```
+3. The extracted text and page images will be saved in `data/extracted/<document_name>/`.
+   - Page images are stored in the `pages/` subdirectory with zero-padded 4-digit filenames (e.g., `page_0001.png`).
+   - Metadata is saved in `metadata.json` within the same document directory.
