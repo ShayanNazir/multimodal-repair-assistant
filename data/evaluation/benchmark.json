@@ -1,0 +1,71 @@
+[
+  {
+    "query": "How do I install a brake rotor?",
+    "expected_pages": [
+      26,
+      27,
+      28
+    ]
+  },
+  {
+    "query": "Are specialized tools and supplies required to install SRAM components?",
+    "expected_pages": [
+      6
+    ]
+  },
+  {
+    "query": "How do I adjust shifter reach?",
+    "expected_pages": [
+      24
+    ]
+  },
+  {
+    "query": "What is the correct cable housing installation procedure?",
+    "expected_pages": [
+      22
+    ]
+  },
+  {
+    "query": "How do I install adhesive backed clips?",
+    "expected_pages": [
+      19
+    ]
+  },
+  {
+    "query": "What are the different brake clamp types?",
+    "expected_pages": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  {
+    "query": "How do I replace a cable?",
+    "expected_pages": [
+      25
+    ]
+  },
+  {
+    "query": "What is the MatchMaker X installation procedure?",
+    "expected_pages": [
+      12
+    ]
+  },
+  {
+    "query": "How do I install a center lock rotor?",
+    "expected_pages": [
+      28
+    ]
+  },
+  {
+    "query": "What is the stealth brake clip installation process?",
+    "expected_pages": [
+      16
+    ]
+  }
+]

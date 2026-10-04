@@ -162,3 +162,88 @@ To process PDF manuals and extract text and images:
 3. The extracted text and page images will be saved in `data/extracted/<document_name>/`.
    - Page images are stored in the `pages/` subdirectory with zero-padded 4-digit filenames (e.g., `page_0001.png`).
    - Metadata is saved in `metadata.json` within the same document directory.
+
+## Phase 2: Semantic Text Retrieval
+
+Once you have completed Phase 1 (document ingestion), you can proceed with Phase 2 to enable semantic search over your extracted text.
+
+### Architecture Overview
+
+The retrieval system works as follows:
+1. **Text Chunking**: Extracted page text is split into overlapping chunks (180-220 words with 30-40 word overlap)
+2. **Embedding Generation**: Each chunk is converted to a numerical vector using Sentence Transformers
+3. **Vector Storage**: Chunks and their embeddings are stored in Qdrant (local mode)
+4. **Semantic Search**: Queries are embedded and compared against stored vectors using cosine similarity
+
+### Component Details
+
+#### Text Chunking
+- Preserves page boundaries (never mixes text from different pages)
+- Creates stable, deterministic chunk IDs: `{document_id}_p{page_number:04d}_c{chunk_index:04d}`
+- Maintains all required metadata: document_id, source_file, page_number, chunk_index, text, character_count, image_path
+
+#### Embeddings
+- Uses `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional vectors)
+- Abstracted interface allows for fake embeddings in testing
+- Cosine similarity is used for measuring semantic similarity
+
+#### Qdrant Storage
+- Local mode storage under `storage/qdrant/`
+- Automatic collection creation and management
+- Efficient similarity search using HNSW indexing
+
+### Usage Instructions
+
+#### 1. Index Extracted Documents
+```bash
+# Using real Sentence Transformers model (downloads ~100MB model)
+python -m src.retrieval.cli index
+
+# Using fake embeddings for testing (fast, no model download)
+python -m src.retrieval.cli index --fake
+```
+
+#### 2. Search for Text
+```bash
+# Real embeddings
+python -m src.retrieval.cli search "How do I install a brake rotor?" --top-k 5
+
+# Fake embeddings (for testing)
+python -m src.retrieval.cli search "How do I install a brake rotor?" --top-k 5 --fake
+```
+
+#### 3. Run Evaluation
+```bash
+# Real embeddings
+python -m src.retrieval.cli evaluate --top-k 5
+
+# Fake embeddings
+python -m src.retrieval.cli evaluate --top-k 5 --fake
+```
+
+### Evaluation Metrics
+
+The system evaluates retrieval quality using:
+
+#### Recall@K
+- Measures what percentage of queries have at least one relevant result in the top K
+- Recall@1: Is the very first result relevant?
+- Recall@3: Is at least one relevant result in the top 3?
+- Recall@5: Is at least one relevant result in the top 5?
+
+#### MRR (Mean Reciprocal Rank)
+- Measures how highly relevant results are ranked
+- Score = 1/rank_of_first_relevant_result
+- MRR of 1.0 means all first relevant results are at position 1
+- MRR of 0.5 means they're mostly at position 2, etc.
+
+### Example Benchmark
+
+The evaluation uses a benchmark file at `data/evaluation/benchmark.json` with queries like:
+- "How do I install a brake rotor?" → expects pages 26, 27, 28
+- "Are specialized tools and supplies required to install SRAM components?" → expects page 6
+- "How do I adjust shifter reach?" → expects page 24
+
+### Test Mode
+
+For development and testing, use the `--fake` flag to avoid downloading the Sentence Transformers model. This uses a deterministic fake embedding generator that produces consistent vectors based on text hashes.
